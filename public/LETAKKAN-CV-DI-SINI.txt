@@ -1,0 +1,10 @@
+File ini adalah placeholder untuk CV PDF kamu.
+
+CARA PAKAI:
+1. Siapkan file CV kamu dalam format PDF
+2. Rename file menjadi: cv-nama-kamu.pdf
+3. Letakkan file di folder ini (public/)
+4. File sudah bisa diakses di: http://localhost:5173/cv-nama-kamu.pdf
+
+Nama file CV dikonfigurasi di: src/data/profile.js
+Cari property: cvFile: '/cv-nama-kamu.pdf'
