@@ -1,21 +1,18 @@
 <template>
   <nav class="navbar" :class="{ scrolled: isScrolled }">
     <div class="container nav-inner">
-      <a href="#hero" class="nav-logo">
-        <span class="logo-bracket">&lt;</span>
-        <span class="logo-text">Porto</span>
-        <span class="logo-bracket">/&gt;</span>
+      <a href="#about" class="nav-logo">
+        <span class="logo-mark">{{ profile.name.split(' ')[0] }}</span>
       </a>
 
       <ul class="nav-links" :class="{ open: menuOpen }">
         <li v-for="link in links" :key="link.href">
           <a :href="link.href" class="nav-link" @click="menuOpen = false">
-            <span class="nav-num">{{ link.num }}</span>
             {{ link.label }}
           </a>
         </li>
         <li>
-          <Button label="Hire Me" icon="pi pi-send" size="small" class="hire-btn" @click="menuOpen = false" as="a" href="#cv" />
+          <a href="#cv" class="hire-btn-raw" @click="menuOpen = false">Let's talk →</a>
         </li>
       </ul>
 
@@ -28,17 +25,17 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import Button from 'primevue/button'
+import { profile } from '@/data'
 
 const isScrolled = ref(false)
 const menuOpen = ref(false)
 
 const links = [
-  { num: '01', label: 'About', href: '#about' },
-  { num: '02', label: 'Experience', href: '#experience' },
-  { num: '03', label: 'Skills', href: '#skills' },
-  { num: '04', label: 'Projects', href: '#projects' },
-  { num: '05', label: 'CV', href: '#cv' },
+  { label: 'About', href: '#about' },
+  { label: 'Experience', href: '#experience' },
+  { label: 'Skills', href: '#skills' },
+  { label: 'Projects', href: '#projects' },
+  { label: 'CV', href: '#cv' },
 ]
 
 const handleScroll = () => { isScrolled.value = window.scrollY > 60 }
@@ -51,17 +48,14 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 100;
-  padding: 22px 0;
+  padding: 20px 0;
   transition: all 0.4s ease;
 }
 
 .navbar.scrolled {
-  background: rgba(8, 8, 16, 0.88);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border-bottom: 1px solid rgba(139,92,246,0.1);
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--glass-border);
   padding: 14px 0;
-  box-shadow: 0 4px 40px rgba(0,0,0,0.4);
 }
 
 .nav-inner {
@@ -71,58 +65,71 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 }
 
 .nav-logo {
-  font-family: var(--font-mono);
-  font-size: 1.25rem;
-  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   text-decoration: none;
-  color: var(--text-primary);
   transition: var(--transition);
-  letter-spacing: -0.02em;
 }
-.logo-bracket { color: var(--accent-primary); }
-.nav-logo:hover { opacity: 0.75; }
+
+.logo-mark {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+}
+
+.logo-dot {
+  width: 6px; height: 6px;
+  background: var(--text-primary);
+  border-radius: 50%;
+  margin-bottom: 2px;
+}
+
+.nav-logo:hover { opacity: 0.8; }
 
 .nav-links {
   display: flex;
   list-style: none;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
 }
 
 .nav-link {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 8px 16px;
-  border-radius: 99px;
+  display: block;
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
   font-size: 0.88rem;
   font-weight: 500;
   color: var(--text-secondary);
   text-decoration: none;
   transition: var(--transition);
+  letter-spacing: 0.01em;
 }
 .nav-link:hover {
   color: var(--text-primary);
-  background: rgba(255,255,255,0.05);
-}
-.nav-num {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  color: var(--accent-primary);
-  opacity: 0.7;
+  background: var(--bg-card-hover);
 }
 
-:deep(.hire-btn) {
-  background: var(--accent-gradient) !important;
-  border: none !important;
-  font-size: 0.85rem !important;
-  padding: 8px 20px !important;
-  box-shadow: 0 4px 20px rgba(139,92,246,0.35) !important;
-  margin-left: 8px;
+.hire-btn-raw {
+  display: block;
+  padding: 7px 18px;
+  margin-left: 6px;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-decoration: none;
+  border: 1px solid var(--glass-border);
+  background: transparent;
+  transition: var(--transition);
+  letter-spacing: 0.01em;
 }
-:deep(.hire-btn:hover) {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 8px 32px rgba(139,92,246,0.55) !important;
+.hire-btn-raw:hover {
+  background: var(--text-primary);
+  border-color: var(--text-primary);
+  color: var(--bg-primary);
 }
 
 .hamburger {
@@ -137,7 +144,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 }
 .hamburger span {
   display: block;
-  width: 24px; height: 2px;
+  width: 22px; height: 2px;
   background: var(--text-primary);
   border-radius: 2px;
   transition: var(--transition);
@@ -151,8 +158,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   .nav-links {
     position: fixed;
     inset: 0;
-    background: rgba(8, 8, 16, 0.97);
-    backdrop-filter: blur(24px);
+    background: var(--bg-primary);
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -164,5 +170,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   }
   .nav-links.open { opacity: 1; pointer-events: all; }
   .nav-link { font-size: 1.3rem; padding: 14px 40px; }
+  .hire-btn-raw { font-size: 1.1rem; padding: 12px 36px; margin-left: 0; }
 }
 </style>
+

@@ -2,9 +2,9 @@
   <section id="experience" class="section">
     <div class="container">
       <div class="section-header">
-        <!-- <span class="section-label">Journey</span> -->
+        <span class="section-label">Journey</span>
         <h2 class="section-title">Work <span>Experience</span></h2>
-        <!-- <p class="section-desc">Track record of my professional journey that shaped me into the developer I am today.</p> -->
+        <p class="section-desc">Where I've been, what I've built, and what I've learned along the way.</p>
       </div>
 
       <Timeline :value="experiences" class="exp-timeline" align="alternate">
@@ -105,7 +105,7 @@ onUnmounted(() => { if (observer) observer.disconnect() })
 }
 
 :deep(.p-timeline-event-connector) {
-  background: linear-gradient(to bottom, rgba(139,92,246,0.4), rgba(6,182,212,0.2)) !important;
+  background: var(--glass-border) !important;
   width: 2px !important;
 }
 
@@ -115,9 +115,9 @@ onUnmounted(() => { if (observer) observer.disconnect() })
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--bg-primary);
   font-size: 0.9rem;
-  box-shadow: 0 0 0 6px rgba(139,92,246,0.1), 0 4px 16px rgba(0,0,0,0.3);
+  box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.05), 0 4px 16px rgba(0,0,0,0.3);
   flex-shrink: 0;
 }
 
@@ -125,9 +125,9 @@ onUnmounted(() => { if (observer) observer.disconnect() })
   font-family: var(--font-mono);
   font-size: 0.8rem;
   font-weight: 700;
-  color: var(--accent-primary);
-  background: rgba(139,92,246,0.08);
-  border: 1px solid rgba(139,92,246,0.2);
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+  border: 1px solid var(--glass-border);
   padding: 6px 14px;
   border-radius: 99px;
   text-align: center;

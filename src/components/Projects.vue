@@ -2,9 +2,9 @@
   <section id="projects" class="section projects-section">
     <div class="container">
       <div class="section-header">
-        <span class="section-label">Portfolio</span>
+        <span class="section-label">Work</span>
         <h2 class="section-title">Featured <span>Projects</span></h2>
-        <p class="section-desc">Some of the projects I am most proud of — built with passion and attention to detail.</p>
+        <p class="section-desc">Stuff I've built that I'm actually proud of. Mostly backend, some full-stack.</p>
       </div>
 
       <!-- Filter -->
@@ -53,7 +53,10 @@
       </TransitionGroup>
 
       <div class="cta-row">
-        <Button as="a" href="https://github.com" target="_blank" label="View All on GitHub" icon="pi pi-github" outlined class="github-cta-btn" />
+        <a href="https://github.com/username" target="_blank" class="btn btn-outline">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          More on GitHub
+        </a>
       </div>
     </div>
   </section>
@@ -66,7 +69,7 @@ import Tag from 'primevue/tag'
 import SelectButton from 'primevue/selectbutton'
 import { projects } from '@/data'
 
-const tabs = ['All', 'Web App', 'Mobile', 'UI/UX']
+const tabs = ['All', 'Backend', 'Frontend']
 const activeTab = ref('All')
 
 const filteredProjects = computed(() =>
@@ -76,7 +79,7 @@ const filteredProjects = computed(() =>
 
 <style scoped>
 .projects-section {
-  background: radial-gradient(ellipse at 80% 50%, rgba(6,182,212,0.04), transparent 60%);
+  background: var(--bg-primary);
 }
 
 .filter-row {
@@ -88,14 +91,14 @@ const filteredProjects = computed(() =>
 :deep(.project-filter .p-selectbutton) {
   background: var(--bg-card) !important;
   border: 1px solid var(--glass-border) !important;
-  border-radius: 99px !important;
+  border-radius: 8px !important;
   overflow: hidden;
   padding: 4px !important;
   gap: 2px !important;
 }
 
 :deep(.project-filter .p-togglebutton) {
-  border-radius: 99px !important;
+  border-radius: 6px !important;
   font-family: var(--font-main) !important;
   font-size: 0.85rem !important;
   font-weight: 500 !important;
@@ -112,9 +115,8 @@ const filteredProjects = computed(() =>
 }
 
 :deep(.project-filter .p-togglebutton.p-highlight) {
-  background: var(--accent-gradient) !important;
-  color: white !important;
-  box-shadow: 0 2px 16px rgba(139,92,246,0.3) !important;
+  background: var(--text-primary) !important;
+  color: var(--bg-primary) !important;
 }
 
 .projects-grid {
@@ -178,14 +180,15 @@ const filteredProjects = computed(() =>
 .project-card:hover .project-overlay { opacity: 1; }
 
 :deep(.overlay-demo-btn) {
-  background: var(--accent-gradient) !important;
+  background: var(--text-primary) !important;
+  color: var(--bg-primary) !important;
   border: none !important;
-  border-radius: 99px !important;
+  border-radius: 8px !important;
   font-size: 0.82rem !important;
 }
 
 :deep(.overlay-gh-btn) {
-  border-radius: 99px !important;
+  border-radius: 8px !important;
   font-size: 0.82rem !important;
   border-color: rgba(255,255,255,0.3) !important;
   color: white !important;
@@ -198,12 +201,11 @@ const filteredProjects = computed(() =>
 .featured-tag {
   position: absolute;
   top: 12px; left: 12px;
-  background: rgba(139,92,246,0.2) !important;
-  color: #c4b5fd !important;
-  border: 1px solid rgba(139,92,246,0.35) !important;
-  border-radius: 99px !important;
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 6px !important;
   font-size: 0.72rem !important;
-  backdrop-filter: blur(8px);
 }
 
 .project-body {
@@ -258,17 +260,16 @@ const filteredProjects = computed(() =>
 .cta-row { text-align: center; }
 
 :deep(.github-cta-btn) {
-  border-radius: 99px !important;
+  border-radius: 8px !important;
   border-color: var(--glass-border) !important;
   color: var(--text-primary) !important;
   padding: 12px 32px !important;
   font-size: 0.95rem !important;
-  font-weight: 600 !important;
+  font-weight: 500 !important;
 }
 :deep(.github-cta-btn:hover) {
-  border-color: var(--accent-primary) !important;
-  color: var(--accent-primary) !important;
-  background: rgba(139,92,246,0.06) !important;
+  border-color: var(--text-secondary) !important;
+  background: var(--bg-card-hover) !important;
 }
 
 /* Transition */

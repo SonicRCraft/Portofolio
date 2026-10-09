@@ -2,9 +2,9 @@
   <section id="skills" class="section skills-section">
     <div class="container">
       <div class="section-header">
-        <!-- <span class="section-label">Skills</span> -->
+        <span class="section-label">Stack</span>
         <h2 class="section-title">Tech <span>Skills</span></h2>
-        <!-- <p class="section-desc">Technologies and tools I use to build high-quality digital products.</p> -->
+        <p class="section-desc">Tools I actually use day-to-day. Not a laundry list — just what I'm comfortable with.</p>
       </div>
 
       <!-- Category Tabs -->
@@ -45,11 +45,11 @@
         </TransitionGroup>
       </div>
 
-      <!-- Top Proficiency bars -->
+      <!-- Proficiency Bars -->
       <div class="proficiency-section">
         <div class="proficiency-header">
-          <h3 class="proficiency-title">Top Proficiencies</h3>
-          <span class="proficiency-subtitle">Based on real-world experience &amp; projects</span>
+          <h3 class="proficiency-title">Where I spend most of my time</h3>
+          <span class="proficiency-subtitle">Based on actual project usage — not self-assessed scores</span>
         </div>
         <div class="prof-bars" ref="barsRef">
           <div v-for="skill in topSkills" :key="skill.name" class="prof-item">

@@ -6,10 +6,10 @@
         <div class="footer-brand">
           <a href="#hero" class="footer-logo">
             <span class="logo-bracket">&lt;</span>
-            <span>Porto</span>
+            <span>{{ profile.name.split(' ')[0] }}</span>
             <span class="logo-bracket">/&gt;</span>
           </a>
-          <p class="footer-tagline">Building meaningful digital experiences, one line of code at a time.</p>
+          <p class="footer-tagline">Backend dev based in Jakarta. Building useful things, one commit at a time.</p>
           <div class="footer-socials">
             <a :href="profile.github" target="_blank" class="social-link" aria-label="GitHub">
               <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
@@ -37,9 +37,7 @@
 
       <div class="footer-bottom">
         <p class="footer-copy">
-          © {{ currentYear }} {{ profile.name }} — Made with
-          <span class="heart">♥</span>
-          using Vue 3 + Vite
+          © {{ currentYear }} {{ profile.name }} — handcrafted with Vue 3 + ☕
         </p>
         <a href="#hero" class="back-to-top" aria-label="Back to top">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
@@ -85,13 +83,7 @@ const navCols = [
 }
 
 .footer-glow {
-  position: absolute;
-  top: -100px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 600px; height: 300px;
-  background: radial-gradient(ellipse, rgba(139, 92, 246, 0.08), transparent 70%);
-  pointer-events: none;
+  display: none;
 }
 
 .footer-inner {
@@ -118,7 +110,7 @@ const navCols = [
   display: inline-block;
 }
 
-.logo-bracket { color: var(--accent-primary); }
+.logo-bracket { color: var(--text-secondary); }
 
 .footer-tagline {
   font-size: 0.88rem;
@@ -145,9 +137,9 @@ const navCols = [
 }
 
 .social-link:hover {
-  color: var(--accent-primary);
-  border-color: var(--accent-primary);
-  background: rgba(139, 92, 246, 0.1);
+  color: var(--text-primary);
+  border-color: var(--text-primary);
+  background: var(--bg-card-hover);
   transform: translateY(-2px);
 }
 
@@ -180,7 +172,7 @@ const navCols = [
 }
 
 .footer-nav-link:hover {
-  color: var(--accent-primary);
+  color: var(--text-primary);
   transform: translateX(4px);
 }
 
@@ -214,17 +206,18 @@ const navCols = [
   align-items: center;
   justify-content: center;
   width: 40px; height: 40px;
-  border-radius: 50%;
-  background: var(--accent-gradient);
-  color: white;
+  border-radius: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
   text-decoration: none;
-  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4);
   transition: var(--transition);
 }
 
 .back-to-top:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.6);
+  background: var(--bg-card-hover);
+  border-color: var(--text-secondary);
 }
 
 @media (max-width: 640px) {
