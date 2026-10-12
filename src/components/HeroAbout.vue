@@ -1,81 +1,108 @@
 <template>
-  <section id="about" class="section hero-section">
+  <section id="about" class="hero-section">
     <div class="container">
-      <div class="hero-grid">
-        <!-- Content -->
-        <div class="hero-content">
-          <div class="hero-greeting animate-fade-up" style="animation-delay:0.1s">
-            <span class="greeting-dot"></span>
-            Open to work — Jakarta, Indonesia
+      <div class="hero-layout">
+        <!-- Left: Statement & Vision -->
+        <div class="hero-statement animate-fade-up">
+          <div class="hero-kicker">
+            <span class="kicker-tag">// SOFTWARE ENGINEER // BACKEND FOCUS &amp; FULL-STACK</span>
           </div>
 
-          <h1 class="hero-title animate-fade-up" style="animation-delay:0.2s">
-            Hey, I'm
-            <span class="name-highlight">{{ profile.name }}</span>
+          <h1 class="hero-headline">
+            Software Engineer with a strong focus on backend development, AI automation, and full-stack systems.
           </h1>
 
-          <div class="hero-role animate-fade-up" style="animation-delay:0.3s">
-            <span class="role-text">{{ profile.role }}</span>
-          </div>
-
-          <p class="hero-bio animate-fade-up" style="animation-delay:0.4s">
-            {{ profile.bio }}
+          <p class="hero-summary">
+            Experienced in building APIs, managing databases, and setting up automated workflows to simplify business processes. Comfortable working across the full development lifecycle using Go, Python, Django, FastAPI, ReactJS, NextJS, and tools like n8n and LangChain to solve real-world technical challenges.
           </p>
 
-          <div class="hero-actions animate-fade-up" style="animation-delay:0.5s">
-            <a href="#projects" class="btn btn-primary">See my work</a>
-            <a :href="profile.cvFile" download class="btn btn-outline">
-              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              Resume
+          <div class="hero-actions">
+            <a :href="profile.cvFile" download class="btn-action btn-action-primary">
+              Download Resume <span>↗</span>
             </a>
-          </div>
-
-          <div class="hero-socials animate-fade-up" style="animation-delay:0.6s">
-            <a :href="profile.github" target="_blank" class="social-link" aria-label="GitHub">
-              <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-            </a>
-            <a :href="profile.linkedin" target="_blank" class="social-link" aria-label="LinkedIn">
-              <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-            </a>
-            <a :href="profile.twitter" target="_blank" class="social-link" aria-label="Twitter/X">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            <a href="#contact" class="hero-contact-inline">
+              <span class="inline-label">Direct:</span>
+              <span class="inline-value">{{ profile.email }}</span>
             </a>
           </div>
         </div>
 
-        <!-- Visual — avatar + bento cards -->
-        <div class="hero-visual animate-fade-up" style="animation-delay:0.3s">
-          <!-- Profile Avatar -->
-          <div class="avatar-wrap">
-            <div class="avatar-container">
-              <img src="/PasFoto%20Roland%20Rudiyanto.jpeg" alt="Roland Rudiyanto" class="profile-img" />
-            </div>
-          </div>
-
-          <!-- Bento-style mini cards -->
-          <div class="bento-cards">
-            <div
-              v-for="(stat, i) in profile.stats"
-              :key="stat.label"
-              class="bento-card glass-card"
-              :class="`bento-${i + 1}`"
-            >
-              <span class="bento-num">{{ stat.value }}</span>
-              <span class="bento-label">{{ stat.label }}</span>
+        <!-- Right: Technical Dossier Card -->
+        <div class="hero-dossier animate-fade-up" style="animation-delay: 0.15s">
+          <div class="dossier-card dark-panel">
+            <div class="dossier-header">
+              <span class="dossier-id">ENGINEER DOSSIER // SHEET NO. 01</span>
+              <span class="dossier-badge">ACTIVE</span>
             </div>
 
-            <div class="bento-card bento-location glass-card">
-              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              <span>Jakarta, ID</span>
+            <h3 class="dossier-name">{{ profile.name }}</h3>
+
+            <div class="dossier-specs">
+              <div class="spec-row">
+                <span class="spec-key">CORE FOCUS</span>
+                <span class="spec-val">Backend (Go, Python, FastAPI, Django) &amp; Full-Stack (React, Next.js)</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">AI &amp; AUTOMATION</span>
+                <span class="spec-val">n8n, LangChain, Generative AI, Workflow Automation</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">DATABASE &amp; CLOUD</span>
+                <span class="spec-val">PostgreSQL, Oracle Cloud (OCI), Docker, Prisma ORM, CI/CD</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">CURRENT STATUS</span>
+                <span class="spec-val status-val">
+                  <span class="status-dot"></span> AVAILABLE FOR ROLES &amp; PROJECTS (JAKARTA)
+                </span>
+              </div>
+            </div>
+
+            <div class="dossier-quote">
+              <p>“Comfortable working across the full development lifecycle using Go, Python, and modern web frameworks to solve real-world technical challenges.”</p>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="scroll-indicator">
-      <div class="scroll-line"></div>
-      <span>scroll</span>
+      <!-- Bottom: 4 Key Production Metrics -->
+      <div class="hero-metrics-grid animate-fade-up" style="animation-delay: 0.25s">
+        <div class="metric-card dark-panel">
+          <div class="metric-header">
+            <span class="metric-label">TOTAL EXPERIENCE</span>
+            <span class="metric-arrow">↗</span>
+          </div>
+          <div class="metric-val">2+ <span class="metric-unit">Years</span></div>
+          <p class="metric-caption">Backend development &amp; full-stack applications</p>
+        </div>
+
+        <div class="metric-card dark-panel">
+          <div class="metric-header">
+            <span class="metric-label">ORACLE CLOUD (OCI)</span>
+            <span class="metric-arrow">↗</span>
+          </div>
+          <div class="metric-val">4x <span class="metric-unit">Certified</span></div>
+          <p class="metric-caption">DevOps, Developer, AI &amp; APEX</p>
+        </div>
+
+        <div class="metric-card dark-panel">
+          <div class="metric-header">
+            <span class="metric-label">FULL-STACK WEB</span>
+            <span class="metric-arrow">↗</span>
+          </div>
+          <div class="metric-val">React &amp; Next.js</div>
+          <p class="metric-caption">Modern responsive web applications</p>
+        </div>
+
+        <div class="metric-card dark-panel">
+          <div class="metric-header">
+            <span class="metric-label">AI &amp; PIPELINES</span>
+            <span class="metric-arrow">↗</span>
+          </div>
+          <div class="metric-val">End-to-End</div>
+          <p class="metric-caption">n8n &amp; LangChain automated workflows</p>
+        </div>
+      </div>
     </div>
   </section>
 </template>
@@ -86,245 +113,289 @@ import { profile } from '@/data'
 
 <style scoped>
 .hero-section {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  padding-top: 100px;
+  padding-top: 140px;
+  padding-bottom: 72px;
+  background: var(--bg-primary);
+  position: relative;
+  width: 100%;
 }
 
-.hero-grid {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 40px;
+.hero-layout {
+  display: grid;
+  grid-template-columns: 1.35fr 0.85fr;
+  gap: 56px;
+  align-items: flex-start;
+  margin-bottom: 56px;
+  width: 100%;
 }
 
-.hero-content {
-  flex: 0 1 55%;
-}
-
-.hero-visual {
-  flex: 0 1 40%;
+/* Statement */
+.hero-statement {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 24px;
-  position: relative;
-  opacity: 0;
 }
 
-/* --- Greeting --- */
-.hero-greeting {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  font-size: 0.82rem;
-  color: var(--text-secondary);
-  margin-bottom: 20px;
-  opacity: 0;
-  letter-spacing: 0.01em;
+.hero-kicker {
+  margin-bottom: 18px;
 }
 
-.greeting-dot {
-  width: 6px; height: 6px;
-  background: var(--text-primary);
-  border-radius: 50%;
-  flex-shrink: 0;
+.kicker-tag {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--accent-orange);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
-/* --- Title --- */
-.hero-title {
-  font-size: clamp(2.2rem, 4.5vw, 3.5rem);
-  font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: -0.03em;
-  margin-bottom: 14px;
-  opacity: 0;
-}
-
-.name-highlight {
-  display: block;
+.hero-headline {
+  font-family: var(--font-serif);
+  font-size: clamp(2.4rem, 3.8vw, 3.6rem);
+  font-weight: 500;
   color: var(--text-primary);
+  line-height: 1.14;
+  letter-spacing: -0.025em;
+  margin-bottom: 24px;
 }
 
-/* --- Role Typewriter --- */
-.hero-role {
-  font-size: 1.05rem;
+.hero-summary {
+  font-size: 1.02rem;
   color: var(--text-secondary);
-  margin-bottom: 22px;
-  min-height: 1.8rem;
-  opacity: 0;
-}
-.role-text { color: var(--text-primary); font-weight: 500; }
-
-/* --- Bio --- */
-.hero-bio {
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  margin-bottom: 30px;
-  opacity: 0;
-  max-width: 500px;
+  line-height: 1.75;
+  max-width: 820px;
+  margin-bottom: 34px;
 }
 
-/* --- Actions --- */
 .hero-actions {
   display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 32px;
-  opacity: 0;
-}
-
-/* --- Socials --- */
-.hero-socials {
-  display: flex;
-  gap: 8px;
-  opacity: 0;
-}
-
-.social-link {
-  display: flex;
   align-items: center;
-  justify-content: center;
-  width: 36px; height: 36px;
-  border-radius: var(--radius-sm);
-  background: transparent;
-  border: 1px solid var(--glass-border);
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.hero-contact-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
   color: var(--text-secondary);
   text-decoration: none;
-  transition: var(--transition);
-}
-.social-link:hover {
-  color: var(--bg-primary);
-  border-color: var(--text-primary);
-  background: var(--text-primary);
+  transition: color 0.2s ease;
 }
 
-/* --- Visual Side --- */
+.hero-contact-inline:hover {
+  color: var(--accent-orange);
+}
 
-/* --- Avatar (Initials) --- */
-.avatar-wrap {
-  position: relative;
+.inline-label {
+  color: var(--text-muted);
+}
+
+.inline-value {
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--glass-border);
+}
+
+/* Dossier Card */
+.hero-dossier {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.dossier-card {
+  width: 100%;
+  max-width: 520px;
+  padding: 30px;
+  border-radius: var(--radius-md);
+  background: #111116;
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+}
+
+.dossier-header {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--glass-border);
+  margin-bottom: 20px;
 }
 
-.avatar-container {
-  width: 180px; height: 180px;
-  border-radius: 50%;
-  background: var(--bg-card);
-  border: 1px solid var(--glass-border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  z-index: 1;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  overflow: hidden;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+.dossier-id {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
 }
 
-.avatar-container:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
-  border-color: var(--text-secondary);
+.dossier-badge {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--accent-orange);
+  background: var(--accent-orange-dim);
+  border: 1px solid var(--accent-orange-border);
+  padding: 2px 8px;
+  border-radius: 99px;
+  letter-spacing: 0.06em;
 }
 
-.profile-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* --- Bento Cards --- */
-.bento-cards {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
-  width: 100%;
-  max-width: 300px;
-}
-
-.bento-card {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 16px;
-  border-radius: var(--radius-sm);
-  background: var(--bg-card);
-  border: 1px solid var(--glass-border);
-  min-width: 110px;
-  flex: 1;
-}
-
-.bento-num {
-  font-size: 1.4rem;
+.dossier-name {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
   font-weight: 600;
   color: var(--text-primary);
-  line-height: 1;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
+  margin-bottom: 18px;
 }
 
-.bento-label {
-  font-size: 0.72rem;
-  color: var(--text-secondary);
-  line-height: 1.3;
-}
-
-.bento-location {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.78rem;
-  color: var(--text-secondary);
-  padding: 12px 16px;
-  flex: none;
-  width: 100%;
-  justify-content: center;
-}
-
-.bento-location svg {
-  color: var(--text-primary);
-  flex-shrink: 0;
-}
-
-/* Scroll indicator */
-.scroll-indicator {
-  position: absolute;
-  bottom: 28px; left: 50%;
-  transform: translateX(-50%);
+.dossier-specs {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  color: var(--text-muted);
-  font-size: 0.68rem;
-  letter-spacing: 0.1em;
-  text-transform: lowercase;
-  animation: fadeIn 1s 1.5s both;
-}
-.scroll-line {
-  width: 1px; height: 36px;
-  background: linear-gradient(to bottom, transparent, var(--text-muted));
-  animation: scrollDown 2s ease infinite;
-}
-@keyframes scrollDown {
-  0% { transform: scaleY(0); transform-origin: top; }
-  50% { transform: scaleY(1); transform-origin: top; }
-  51% { transform-origin: bottom; }
-  100% { transform: scaleY(0); transform-origin: bottom; }
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
-@media (max-width: 900px) {
-  .hero-grid { grid-template-columns: 1fr; gap: 40px; text-align: center; }
-  .hero-bio { max-width: 100%; margin-left: auto; margin-right: auto; }
-  .hero-actions, .hero-socials { justify-content: center; }
-  .hero-visual { order: -1; }
-  .bento-cards { max-width: 280px; }
-  .scroll-indicator { display: none; }
+.spec-row {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.spec-key {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+}
+
+.spec-val {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-primary);
+  line-height: 1.45;
+}
+
+.status-val {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #4ade80;
+}
+
+.dossier-quote {
+  padding-top: 14px;
+  border-top: 1px dashed var(--glass-border);
+}
+
+.dossier-quote p {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Metrics Row (spans full wide width) */
+.hero-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  padding-top: 24px;
+  width: 100%;
+}
+
+.metric-card {
+  padding: 20px 24px;
+  border-radius: var(--radius-sm);
+  background: #111116;
+  border: 1px solid var(--glass-border);
+  transition: var(--transition);
+}
+
+.metric-card:hover {
+  border-color: rgba(245, 158, 11, 0.35);
+  transform: translateY(-2px);
+}
+
+.metric-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.metric-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+}
+
+.metric-arrow {
+  color: var(--accent-orange);
+  font-size: 0.82rem;
+}
+
+.metric-val {
+  font-family: var(--font-mono);
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+
+.metric-unit {
+  font-size: 0.85rem;
+  color: var(--accent-orange);
+  font-weight: 500;
+}
+
+.metric-caption {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+@media (max-width: 1100px) {
+  .hero-layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .hero-dossier {
+    justify-content: flex-start;
+  }
+  .dossier-card {
+    max-width: 100%;
+  }
+  .hero-metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-section {
+    padding-top: 110px;
+    padding-bottom: 48px;
+  }
+  .hero-headline {
+    font-size: 2.1rem;
+  }
+  .hero-metrics-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .dossier-card {
+    padding: 20px;
+  }
 }
 </style>

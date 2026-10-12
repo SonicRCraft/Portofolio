@@ -1,283 +1,296 @@
 <template>
-  <section id="projects" class="section projects-section">
+  <section id="projects" class="section systems-section">
     <div class="container">
-      <div class="section-header">
-        <span class="section-label">Work</span>
-        <h2 class="section-title">Featured <span>Projects</span></h2>
-        <p class="section-desc">Stuff I've built that I'm actually proud of. Mostly backend, some full-stack.</p>
+      <!-- Section Header -->
+      <div class="section-header-row">
+        <div class="section-header-left">
+          <span class="section-tag">// 02 / SELECTED ARCHITECTURE &amp; SYSTEMS</span>
+          <h2 class="section-heading">Selected Architecture &amp; Systems</h2>
+        </div>
+        <span class="section-meta">LOGISTICS, INVENTORY &amp; MOBILE SYSTEMS</span>
       </div>
 
-      <!-- Filter -->
-      <div class="filter-row">
-        <SelectButton v-model="activeTab" :options="tabs" class="project-filter" />
-      </div>
+      <!-- Featured System 01 (Full-Stack Decoupled System) -->
+      <div v-if="featuredProject" class="featured-system-card dark-panel animate-fade-up">
+        <div class="system-tag-line">
+          <span class="system-index-tag">{{ featuredProject.systemTag }}</span>
+          <span class="system-status-pill">{{ featuredProject.statusNote }}</span>
+        </div>
 
-      <!-- Grid -->
-      <TransitionGroup name="proj-list" tag="div" class="projects-grid">
-        <div
-          v-for="project in filteredProjects"
-          :key="project.title"
-          class="project-card glass-card"
-        >
-          <!-- Image Header -->
-          <div class="project-image" :style="{ background: project.gradient }">
-            <div class="project-mockup">
-              <div class="mockup-dots"><span></span><span></span><span></span></div>
-              <div class="mockup-icon" :style="{ color: project.accentColor }">
-                <i :class="project.piIcon" style="font-size:3rem; opacity:0.7"></i>
-              </div>
-            </div>
-            <div class="project-overlay">
-              <Button :href="project.demo" as="a" target="_blank" label="Live Demo" icon="pi pi-external-link" size="small" class="overlay-demo-btn" />
-              <Button :href="project.github" as="a" target="_blank" label="GitHub" icon="pi pi-github" size="small" severity="secondary" outlined class="overlay-gh-btn" />
-            </div>
-            <Tag v-if="project.featured" value="⭐ Featured" class="featured-tag" />
-          </div>
+        <div class="featured-header-content">
+          <h3 class="system-title">{{ featuredProject.title }}</h3>
+          <p class="system-desc">{{ featuredProject.desc }}</p>
+        </div>
 
-          <!-- Body -->
-          <div class="project-body">
-            <div class="project-meta">
-              <span class="project-cat" :style="{ color: project.accentColor }">
-                <i :class="project.catIcon" style="font-size:0.75rem"></i>
-                {{ project.category }}
-              </span>
-              <span class="project-year">{{ project.year }}</span>
-            </div>
-            <h3 class="project-title">{{ project.title }}</h3>
-            <p class="project-desc">{{ project.desc }}</p>
-            <div class="project-tags">
-              <span v-for="tag in project.tags" :key="tag" class="skill-tag">{{ tag }}</span>
-            </div>
+        <!-- Key Metrics Row -->
+        <div class="system-metrics-row">
+          <div
+            v-for="metric in featuredProject.metrics"
+            :key="metric.label"
+            class="sys-metric-box"
+          >
+            <span class="sys-metric-label">{{ metric.label }}</span>
+            <span class="sys-metric-value">{{ metric.value }}</span>
           </div>
         </div>
-      </TransitionGroup>
 
-      <div class="cta-row">
-        <a href="https://github.com/username" target="_blank" class="btn btn-outline">
-          <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-          More on GitHub
-        </a>
+        <!-- Tags -->
+        <div class="system-tags-wrap">
+          <span v-for="tag in featuredProject.tags" :key="tag" class="mono-chip">
+            {{ tag }}
+          </span>
+        </div>
+
+        <!-- Actions: Frontend & Backend GitHub Links -->
+        <div class="system-actions-row">
+          <a
+            v-if="featuredProject.githubFE"
+            :href="featuredProject.githubFE"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-action"
+          >
+            Frontend Repo (React.js) <span>↗</span>
+          </a>
+          <a
+            v-if="featuredProject.githubBE"
+            :href="featuredProject.githubBE"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-action btn-action-primary"
+          >
+            Backend Repo (FastAPI) <span>↗</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Secondary Systems Grid (2 Columns) -->
+      <div class="secondary-systems-grid">
+        <div
+          v-for="project in secondaryProjects"
+          :key="project.id"
+          class="sub-system-card dark-panel animate-fade-up"
+        >
+          <div class="system-tag-line">
+            <span class="system-index-tag">{{ project.systemTag }}</span>
+            <span class="system-status-pill">{{ project.statusNote }}</span>
+          </div>
+
+          <h3 class="sub-system-title">{{ project.title }}</h3>
+          <p class="system-desc">{{ project.desc }}</p>
+
+          <!-- Key Metrics -->
+          <div class="system-metrics-row">
+            <div
+              v-for="metric in project.metrics"
+              :key="metric.label"
+              class="sys-metric-box"
+            >
+              <span class="sys-metric-label">{{ metric.label }}</span>
+              <span class="sys-metric-value">{{ metric.value }}</span>
+            </div>
+          </div>
+
+          <!-- Tags -->
+          <div class="system-tags-wrap">
+            <span v-for="tag in project.tags" :key="tag" class="mono-chip">
+              {{ tag }}
+            </span>
+          </div>
+
+          <!-- Actions if any, or status badge -->
+          <div class="system-actions-row">
+            <span class="archive-status-badge">
+              <span class="status-dot-orange"></span>
+              {{ project.year }}
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import Button from 'primevue/button'
-import Tag from 'primevue/tag'
-import SelectButton from 'primevue/selectbutton'
+import { computed } from 'vue'
 import { projects } from '@/data'
 
-const tabs = ['All', 'Backend', 'Frontend']
-const activeTab = ref('All')
-
-const filteredProjects = computed(() =>
-  activeTab.value === 'All' ? projects : projects.filter(p => p.category === activeTab.value)
-)
+const featuredProject = computed(() => projects.find(p => p.featured) || projects[0])
+const secondaryProjects = computed(() => projects.filter(p => p.id !== featuredProject.value?.id))
 </script>
 
 <style scoped>
-.projects-section {
+.systems-section {
   background: var(--bg-primary);
+  width: 100%;
 }
 
-.filter-row {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 48px;
-}
-
-:deep(.project-filter .p-selectbutton) {
-  background: var(--bg-card) !important;
-  border: 1px solid var(--glass-border) !important;
-  border-radius: 8px !important;
-  overflow: hidden;
-  padding: 4px !important;
-  gap: 2px !important;
-}
-
-:deep(.project-filter .p-togglebutton) {
-  border-radius: 6px !important;
-  font-family: var(--font-main) !important;
-  font-size: 0.85rem !important;
-  font-weight: 500 !important;
-  padding: 8px 22px !important;
-  border: none !important;
-  color: var(--text-secondary) !important;
-  background: transparent !important;
-  transition: var(--transition) !important;
-}
-
-:deep(.project-filter .p-togglebutton:hover) {
-  color: var(--text-primary) !important;
-  background: rgba(255,255,255,0.05) !important;
-}
-
-:deep(.project-filter .p-togglebutton.p-highlight) {
-  background: var(--text-primary) !important;
-  color: var(--bg-primary) !important;
-}
-
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  margin-bottom: 52px;
-}
-
-.project-card {
-  overflow: hidden;
+/* Featured System Card */
+.featured-system-card {
   display: flex;
   flex-direction: column;
-  padding: 0;
+  gap: 20px;
+  padding: 38px 42px;
+  background: #111116;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  margin-bottom: 28px;
+  width: 100%;
+  transition: border-color 0.25s ease;
 }
 
-.project-image {
-  position: relative;
-  height: 190px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+.featured-system-card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
-.project-mockup {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-}
-
-.mockup-dots {
-  display: flex;
-  gap: 5px;
-}
-.mockup-dots span {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.12);
-}
-
-.mockup-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.project-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.8);
-  backdrop-filter: blur(6px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  opacity: 0;
-  transition: var(--transition);
-}
-.project-card:hover .project-overlay { opacity: 1; }
-
-:deep(.overlay-demo-btn) {
-  background: var(--text-primary) !important;
-  color: var(--bg-primary) !important;
-  border: none !important;
-  border-radius: 8px !important;
-  font-size: 0.82rem !important;
-}
-
-:deep(.overlay-gh-btn) {
-  border-radius: 8px !important;
-  font-size: 0.82rem !important;
-  border-color: rgba(255,255,255,0.3) !important;
-  color: white !important;
-}
-
-:deep(.overlay-gh-btn:hover) {
-  background: rgba(255,255,255,0.1) !important;
-}
-
-.featured-tag {
-  position: absolute;
-  top: 12px; left: 12px;
-  background: var(--bg-secondary) !important;
-  color: var(--text-primary) !important;
-  border: 1px solid var(--glass-border) !important;
-  border-radius: 6px !important;
-  font-size: 0.72rem !important;
-}
-
-.project-body {
-  padding: 20px 22px 22px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  flex: 1;
-}
-
-.project-meta {
+.system-tag-line {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
-.project-cat {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 0.75rem;
+.system-index-tag {
   font-family: var(--font-mono);
-  font-weight: 600;
-}
-
-.project-year {
   font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--accent-orange);
+  letter-spacing: 0.06em;
+}
+
+.system-status-pill {
   font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  padding: 3px 10px;
+  border-radius: 99px;
+  letter-spacing: 0.04em;
+}
+
+.featured-header-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.system-title {
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.015em;
+  margin: 0;
+  line-height: 1.25;
+}
+
+.system-desc {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin: 0;
+  max-width: 1100px;
+}
+
+/* Metrics Row */
+.system-metrics-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 4px 0;
+}
+
+.sys-metric-box {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 16px;
+  background: #0d0d10;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  min-width: 130px;
+}
+
+.sys-metric-label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+}
+
+.sys-metric-value {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.system-tags-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.system-actions-row {
+  display: flex;
+  gap: 14px;
+  padding-top: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.archive-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
   color: var(--text-muted);
 }
 
-.project-title {
-  font-size: 1rem;
-  font-weight: 700;
+/* Secondary Systems Grid */
+.secondary-systems-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+  width: 100%;
+}
+
+.sub-system-card {
+  padding: 32px 34px;
+  background: #111116;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transition: border-color 0.25s ease;
+}
+
+.sub-system-card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.sub-system-title {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  font-weight: 600;
   color: var(--text-primary);
+  margin: 0;
   line-height: 1.3;
 }
 
-.project-desc {
-  font-size: 0.86rem;
-  color: var(--text-secondary);
-  line-height: 1.65;
-  flex: 1;
+@media (max-width: 1024px) {
+  .featured-system-card {
+    padding: 24px;
+  }
+  .secondary-systems-grid {
+    grid-template-columns: 1fr;
+  }
+  .sub-system-card {
+    padding: 24px;
+  }
 }
-
-.project-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.cta-row { text-align: center; }
-
-:deep(.github-cta-btn) {
-  border-radius: 8px !important;
-  border-color: var(--glass-border) !important;
-  color: var(--text-primary) !important;
-  padding: 12px 32px !important;
-  font-size: 0.95rem !important;
-  font-weight: 500 !important;
-}
-:deep(.github-cta-btn:hover) {
-  border-color: var(--text-secondary) !important;
-  background: var(--bg-card-hover) !important;
-}
-
-/* Transition */
-.proj-list-enter-active, .proj-list-leave-active { transition: all 0.3s ease; }
-.proj-list-enter-from { opacity: 0; transform: scale(0.95) translateY(10px); }
-.proj-list-leave-to { opacity: 0; transform: scale(0.95); }
-.proj-list-move { transition: transform 0.35s ease; }
-
-@media (max-width: 1024px) { .projects-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 600px) { .projects-grid { grid-template-columns: 1fr; } }
 </style>

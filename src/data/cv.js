@@ -4,22 +4,11 @@
 
 export const cvStats = [
   { value: '2+', label: 'Years of Experience', icon: 'pi pi-briefcase', color: '#8b5cf6' },
-  { value: '5+', label: 'Certifications', icon: 'pi pi-verified', color: '#06b6d4' },
+  { value: '4', label: 'Oracle Certifications', icon: 'pi pi-verified', color: '#06b6d4' },
   { value: '3', label: 'Trainings', icon: 'pi pi-check-circle', color: '#22c55e' },
-  { value: '3.92', label: 'GPA (Cum Laude)', icon: 'pi pi-graduation-cap', color: '#f59e0b' },
 ]
 
 export const certificates = [
-  {
-    name: 'OutSystems Architecture & Associate',
-    issuer: 'OutSystems',
-    issuerCategory: 'OutSystems',
-    badge: 'OutSystems',
-    file: '/sertifikat/Roland%20Rudiyanto%20OutSystems%20Certificate.pdf',
-    icon: 'pi pi-verified',
-    color: '#e02424',
-    date: 'Verified Credential'
-  },
   {
     name: 'OCI AI Foundation Associate',
     issuer: 'Oracle Cloud Infrastructure',

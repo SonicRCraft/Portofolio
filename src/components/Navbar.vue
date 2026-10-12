@@ -1,26 +1,38 @@
 <template>
-  <nav class="navbar" :class="{ scrolled: isScrolled }">
+  <header class="site-header" :class="{ scrolled: isScrolled }">
     <div class="container nav-inner">
-      <a href="#about" class="nav-logo">
-        <span class="logo-mark">{{ profile.name.split(' ')[0] }}</span>
-      </a>
+      <!-- Brand & Status -->
+      <div class="nav-left">
+        <a href="#about" class="nav-brand">
+          <span class="brand-name">{{ profile.name }}</span>
+          <span class="brand-role">// SOFTWARE ENGINEER (BACKEND &amp; FULL-STACK)</span>
+        </a>
 
-      <ul class="nav-links" :class="{ open: menuOpen }">
-        <li v-for="link in links" :key="link.href">
-          <a :href="link.href" class="nav-link" @click="menuOpen = false">
-            {{ link.label }}
-          </a>
-        </li>
-        <li>
-          <a href="#cv" class="hire-btn-raw" @click="menuOpen = false">Let's talk →</a>
-        </li>
-      </ul>
+        <div class="status-indicator">
+          <span class="status-dot"></span>
+          <span class="status-text">Available for roles & projects</span>
+        </div>
+      </div>
 
-      <button class="hamburger" :class="{ active: menuOpen }" @click="menuOpen = !menuOpen" aria-label="Toggle menu">
-        <span></span><span></span><span></span>
+      <!-- Navigation Links -->
+      <nav class="nav-menu" :class="{ open: menuOpen }">
+        <a href="#experience" class="nav-link" @click="menuOpen = false">Experience</a>
+        <a href="#projects" class="nav-link" @click="menuOpen = false">Selected Systems</a>
+        <a href="#skills" class="nav-link" @click="menuOpen = false">Capabilities</a>
+        <a href="#certificates" class="nav-link" @click="menuOpen = false">Accreditations</a>
+        <a href="#contact" class="btn-hire" @click="menuOpen = false">
+          Get In Touch <span>↗</span>
+        </a>
+      </nav>
+
+      <!-- Hamburger toggle on mobile -->
+      <button class="hamburger" :class="{ active: menuOpen }" @click="menuOpen = !menuOpen" aria-label="Toggle Navigation">
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
     </div>
-  </nav>
+  </header>
 </template>
 
 <script setup>
@@ -30,33 +42,33 @@ import { profile } from '@/data'
 const isScrolled = ref(false)
 const menuOpen = ref(false)
 
-const links = [
-  { label: 'About', href: '#about' },
-  { label: 'Experience', href: '#experience' },
-  { label: 'Skills', href: '#skills' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Certificates', href: '#certificates' },
-  { label: 'CV', href: '#cv' },
-]
+const handleScroll = () => {
+  isScrolled.value = window.scrollY > 40
+}
 
-const handleScroll = () => { isScrolled.value = window.scrollY > 60 }
 onMounted(() => window.addEventListener('scroll', handleScroll))
 onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 </script>
 
 <style scoped>
-.navbar {
+.site-header {
   position: fixed;
-  top: 0; left: 0; right: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
-  padding: 20px 0;
-  transition: all 0.4s ease;
+  background: rgba(10, 10, 12, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--glass-border);
+  padding: 16px 0;
+  transition: all 0.3s ease;
 }
 
-.navbar.scrolled {
-  background: var(--bg-primary);
-  border-bottom: 1px solid var(--glass-border);
-  padding: 14px 0;
+.site-header.scrolled {
+  background: rgba(10, 10, 12, 0.96);
+  padding: 12px 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 .nav-inner {
@@ -65,74 +77,99 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   justify-content: space-between;
 }
 
-.nav-logo {
+.nav-left {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
   text-decoration: none;
-  transition: var(--transition);
 }
 
-.logo-mark {
-  font-family: var(--font-mono);
-  font-size: 1.1rem;
-  font-weight: 700;
+.brand-name {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 600;
   color: var(--text-primary);
-  letter-spacing: -0.03em;
+  letter-spacing: -0.01em;
 }
 
-.logo-dot {
-  width: 6px; height: 6px;
-  background: var(--text-primary);
-  border-radius: 50%;
-  margin-bottom: 2px;
+.brand-role {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
 }
 
-.nav-logo:hover { opacity: 0.8; }
-
-.nav-links {
-  display: flex;
-  list-style: none;
+.status-indicator {
+  display: inline-flex;
   align-items: center;
-  gap: 2px;
+  gap: 8px;
+  padding: 4px 10px;
+  background: rgba(34, 197, 94, 0.06);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  border-radius: 99px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: #4ade80;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 28px;
 }
 
 .nav-link {
-  display: block;
-  padding: 7px 14px;
-  border-radius: var(--radius-sm);
-  font-size: 0.88rem;
-  font-weight: 500;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
   color: var(--text-secondary);
   text-decoration: none;
-  transition: var(--transition);
-  letter-spacing: 0.01em;
-}
-.nav-link:hover {
-  color: var(--text-primary);
-  background: var(--bg-card-hover);
+  letter-spacing: 0.04em;
+  transition: color 0.2s ease;
 }
 
-.hire-btn-raw {
-  display: block;
-  padding: 7px 18px;
-  margin-left: 6px;
-  border-radius: var(--radius-sm);
-  font-size: 0.88rem;
+.nav-link:hover {
+  color: var(--text-primary);
+}
+
+.btn-hire {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
   font-weight: 600;
   color: var(--text-primary);
   text-decoration: none;
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
   border: 1px solid var(--glass-border);
-  background: transparent;
   transition: var(--transition);
-  letter-spacing: 0.01em;
-}
-.hire-btn-raw:hover {
-  background: var(--text-primary);
-  border-color: var(--text-primary);
-  color: var(--bg-primary);
 }
 
+.btn-hire:hover {
+  border-color: var(--accent-orange);
+  color: var(--accent-orange);
+  background: #181822;
+}
+
+.btn-hire span {
+  font-size: 0.85rem;
+  transition: transform 0.2s ease;
+}
+
+.btn-hire:hover span {
+  transform: translate(2px, -2px);
+}
+
+/* Hamburger button */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -140,38 +177,46 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   background: none;
   border: none;
   cursor: pointer;
-  padding: 8px;
-  z-index: 200;
+  padding: 6px;
+  z-index: 120;
 }
+
 .hamburger span {
   display: block;
-  width: 22px; height: 2px;
+  width: 22px;
+  height: 2px;
   background: var(--text-primary);
   border-radius: 2px;
   transition: var(--transition);
 }
+
 .hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .hamburger.active span:nth-child(2) { opacity: 0; }
 .hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-@media (max-width: 768px) {
+@media (max-width: 960px) {
+  .status-indicator { display: none; }
+}
+
+@media (max-width: 820px) {
   .hamburger { display: flex; }
-  .nav-links {
+  .nav-menu {
     position: fixed;
     inset: 0;
-    background: var(--bg-primary);
+    background: rgba(10, 10, 12, 0.98);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 20px;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
-    z-index: 100;
+    z-index: 110;
   }
-  .nav-links.open { opacity: 1; pointer-events: all; }
-  .nav-link { font-size: 1.3rem; padding: 14px 40px; }
-  .hire-btn-raw { font-size: 1.1rem; padding: 12px 36px; margin-left: 0; }
+  .nav-menu.open { opacity: 1; pointer-events: all; }
+  .nav-link { font-size: 1.1rem; padding: 10px 24px; }
+  .btn-hire { font-size: 0.95rem; padding: 12px 28px; margin-top: 10px; }
 }
 </style>
-

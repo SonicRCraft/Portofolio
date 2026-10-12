@@ -1,203 +1,215 @@
 <template>
-  <section id="experience" class="section">
+  <section id="experience" class="section exp-section">
     <div class="container">
-      <div class="section-header">
-        <span class="section-label">Journey</span>
-        <h2 class="section-title">Work <span>Experience</span></h2>
-        <p class="section-desc">Where I've been, what I've built, and what I've learned along the way.</p>
+      <!-- Section Header -->
+      <div class="section-header-row">
+        <div class="section-header-left">
+          <span class="section-tag">// 01 / WORK EXPERIENCE</span>
+          <h2 class="section-heading">Work Experience</h2>
+        </div>
+        <span class="section-meta">2024 — PRESENT</span>
       </div>
 
-      <Timeline :value="experiences" class="exp-timeline" align="alternate">
-        <template #marker="slotProps">
-          <div class="timeline-marker-custom" :style="{ background: slotProps.item.color }">
-            <i :class="slotProps.item.icon"></i>
+      <!-- Experience Items List -->
+      <div class="exp-list">
+        <div
+          v-for="exp in experiences"
+          :key="exp.company + exp.period"
+          class="exp-item animate-fade-up"
+        >
+          <!-- Left Column: Period & Company -->
+          <div class="exp-company-col">
+            <span class="exp-period-label">{{ exp.period }}</span>
+            <h3 class="exp-company-name">{{ exp.company }}</h3>
+            <span class="exp-type-tag">{{ exp.type }}</span>
           </div>
-        </template>
 
-        <template #content="slotProps">
-          <Card class="exp-card" :class="{ 'is-visible': slotProps.item.visible }">
-            <template #header>
-              <div class="exp-card-header" :style="{ background: slotProps.item.gradient }">
-                <Tag :value="slotProps.item.type" :style="{ background: slotProps.item.color + '20', color: slotProps.item.color, border: '1px solid ' + slotProps.item.color + '40' }" />
-                <span class="exp-period">
-                  <i class="pi pi-calendar" style="font-size:0.75rem"></i>
-                  {{ slotProps.item.period }}
-                </span>
-              </div>
-            </template>
-            <template #title>{{ slotProps.item.role }}</template>
-            <template #subtitle>
-              <span class="exp-company">
-                <i class="pi pi-building" style="font-size:0.78rem; margin-right:5px"></i>
-                {{ slotProps.item.company }}
-                <span class="exp-location">
-                  <i class="pi pi-map-marker" style="font-size:0.72rem; margin-left:10px; margin-right:4px"></i>
-                  {{ slotProps.item.location }}
-                </span>
+          <!-- Right Column: Detail Card -->
+          <div class="exp-detail-card dark-panel">
+            <div class="detail-header">
+              <h4 class="exp-role-title">{{ exp.role }}</h4>
+              <span class="exp-loc-badge">
+                <i class="pi pi-map-marker"></i>
+                {{ exp.location }}
               </span>
-            </template>
-            <template #content>
-              <p class="exp-desc">{{ slotProps.item.desc }}</p>
-              <div class="exp-tags">
-                <span v-for="tag in slotProps.item.tags" :key="tag" class="skill-tag">{{ tag }}</span>
-              </div>
-            </template>
-          </Card>
-        </template>
+            </div>
 
-        <template #opposite="slotProps">
-          <div class="exp-year">{{ slotProps.item.year }}</div>
-        </template>
-      </Timeline>
+            <!-- Bullet Points directly from CV -->
+            <ul v-if="exp.bulletPoints && exp.bulletPoints.length" class="exp-bullet-list">
+              <li v-for="(point, pIdx) in exp.bulletPoints" :key="pIdx" class="exp-bullet-item">
+                <span class="bullet-marker">•</span>
+                <span class="bullet-text">{{ point }}</span>
+              </li>
+            </ul>
+            <p v-else class="exp-desc-text">{{ exp.desc }}</p>
+
+            <!-- Tags -->
+            <div class="exp-tags-row">
+              <span v-for="tag in exp.tags" :key="tag" class="mono-chip">
+                {{ tag }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
-import Timeline from 'primevue/timeline'
-import Card from 'primevue/card'
-import Tag from 'primevue/tag'
-import { experiences as experienceData } from '@/data'
-
-// Tambahkan reactive visible flag ke setiap item
-const experiences = ref(experienceData.map(e => ({ ...e, visible: false })))
-
-const sectionRef = ref(null)
-let observer = null
-
-onMounted(() => {
-  // Observe the whole section; stagger-reveal cards when section enters viewport
-  const section = document.querySelector('#experience')
-  if (!section) return
-
-  observer = new IntersectionObserver(
-    (entries) => {
-      if (entries[0].isIntersecting) {
-        experiences.value.forEach((_, i) => {
-          setTimeout(() => {
-            experiences.value[i].visible = true
-          }, i * 180)
-        })
-        observer.disconnect()
-      }
-    },
-    { threshold: 0.1 }
-  )
-  observer.observe(section)
-})
-
-onUnmounted(() => { if (observer) observer.disconnect() })
+import { experiences } from '@/data'
 </script>
 
 <style scoped>
-:deep(.exp-timeline) {
-  padding: 0;
+.exp-section {
+  background: var(--bg-primary);
+  width: 100%;
 }
 
-:deep(.p-timeline-event-opposite) {
-  flex: 0 0 120px;
-  max-width: 120px;
-}
-
-:deep(.p-timeline-event-content) {
-  padding-bottom: 40px !important;
-}
-
-:deep(.p-timeline-event-connector) {
-  background: var(--glass-border) !important;
-  width: 2px !important;
-}
-
-.timeline-marker-custom {
-  width: 42px; height: 42px;
-  border-radius: 50%;
+.exp-list {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--bg-primary);
-  font-size: 0.9rem;
-  box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.05), 0 4px 16px rgba(0,0,0,0.3);
-  flex-shrink: 0;
+  flex-direction: column;
+  gap: 36px;
+  width: 100%;
 }
 
-.exp-year {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  background: var(--bg-secondary);
-  border: 1px solid var(--glass-border);
-  padding: 6px 14px;
-  border-radius: 99px;
-  text-align: center;
-  white-space: nowrap;
+.exp-item {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 48px;
+  align-items: flex-start;
+  width: 100%;
 }
 
-:deep(.exp-card) {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.3s, box-shadow 0.3s, background 0.3s !important;
-}
-
-:deep(.exp-card.is-visible) {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-:deep(.exp-card .p-card-body) { padding: 0 !important; }
-
-.exp-card-header {
-  padding: 16px 24px;
+/* Left Company Col */
+.exp-company-col {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-radius: var(--radius-md) var(--radius-md) 0 0;
-  border-bottom: 1px solid var(--glass-border);
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 4px;
 }
 
-.exp-period {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+.exp-period-label {
   font-family: var(--font-mono);
   font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent-orange);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.exp-company-name {
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.exp-type-tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
   color: var(--text-muted);
 }
 
-:deep(.exp-card .p-card-title) {
-  padding: 16px 24px 4px !important;
-  margin: 0 !important;
+/* Right Detail Card */
+.exp-detail-card {
+  padding: 28px 32px;
+  background: #111116;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
 }
 
-:deep(.exp-card .p-card-subtitle) {
-  padding: 0 24px 12px !important;
-}
-
-.exp-company {
+.detail-header {
   display: flex;
   align-items: center;
-  font-size: 0.88rem;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.exp-role-title {
+  font-family: var(--font-main);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.exp-loc-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  padding: 4px 12px;
+  border-radius: 99px;
+}
+
+.exp-loc-badge i {
+  font-size: 0.7rem;
+  color: var(--accent-orange);
+}
+
+.exp-bullet-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.exp-bullet-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.94rem;
   color: var(--text-secondary);
+  line-height: 1.68;
 }
 
-.exp-location { color: var(--text-muted); font-size: 0.82rem; }
-
-:deep(.exp-card .p-card-content) {
-  padding: 0 24px 24px !important;
+.bullet-marker {
+  color: var(--accent-orange);
+  font-weight: 700;
+  line-height: 1.68;
 }
 
-.exp-desc {
-  font-size: 0.9rem;
+.bullet-text {
+  flex: 1;
+}
+
+.exp-desc-text {
+  font-size: 0.94rem;
   color: var(--text-secondary);
-  line-height: 1.75;
-  margin-bottom: 16px;
+  line-height: 1.7;
+  margin: 0;
 }
 
-.exp-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+.exp-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
 
-@media (max-width: 768px) {
-  :deep(.p-timeline-event-opposite) { display: none !important; }
-  :deep(.p-timeline) { padding-left: 0; }
+@media (max-width: 960px) {
+  .exp-item {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .exp-detail-card {
+    padding: 22px;
+  }
 }
 </style>

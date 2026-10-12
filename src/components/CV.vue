@@ -1,97 +1,104 @@
 <template>
-  <section id="cv" class="section cv-section">
+  <section id="contact" class="section contact-section">
     <div class="container">
-      <div class="section-header">
-        <span class="section-label">Resume</span>
-        <h2 class="section-title">Download <span>CV</span></h2>
-        <p class="section-desc">If you want to know more about me — my CV has the full story. Feel free to reach out too.</p>
+      <!-- Section Header -->
+      <div class="section-header-row">
+        <div class="section-header-left">
+          <span class="section-tag">// 05 / GET IN TOUCH</span>
+          <h2 class="section-heading">Start a Conversation</h2>
+        </div>
+        <span class="section-meta">PROJECT BRIEF &amp; GENERAL ENQUIRY</span>
       </div>
 
-      <div class="cv-wrapper">
-        <!-- Main Download Card -->
-        <div class="cv-card glass-card">
-          <div class="cv-card-bg">
-            <div class="cv-pattern"></div>
-          </div>
+      <!-- 2-Column Contact Layout -->
+      <div class="contact-layout animate-fade-up">
+        <!-- Left Side: Narrative & Direct Contacts -->
+        <div class="contact-narrative">
+          <p class="contact-pitch">
+            Open for full-time software engineering roles, backend development, and full-stack projects. Let’s connect and discuss how I can contribute to your engineering goals.
+          </p>
 
-          <div class="cv-card-content">
-            <div class="cv-avatar">
-              <div class="cv-avatar-ring">
-                <i class="pi pi-file-pdf" style="font-size: 2.2rem; color: var(--text-primary)"></i>
+          <div class="contact-details-list">
+            <div class="contact-detail-row">
+              <span class="detail-label">EMAIL</span>
+              <a :href="'mailto:' + profile.email" class="detail-link">
+                {{ profile.email }} <span>↗</span>
+              </a>
+            </div>
+
+            <div class="contact-detail-row">
+              <span class="detail-label">LOCATION</span>
+              <span class="detail-text">{{ profile.location }} (GMT+7)</span>
+            </div>
+
+            <div class="contact-detail-row">
+              <span class="detail-label">PROFILES</span>
+              <div class="detail-links-group">
+                <a :href="profile.github" target="_blank" class="detail-link">GitHub <span>↗</span></a>
+                <span class="sep">·</span>
+                <a :href="profile.linkedin" target="_blank" class="detail-link">LinkedIn <span>↗</span></a>
               </div>
             </div>
 
-            <div class="cv-info">
-              <div class="cv-doc-label">
-                <i class="pi pi-file"></i>
-                Curriculum Vitae
-              </div>
-              <h3 class="cv-name">{{ profile.name }}</h3>
-              <p class="cv-role">{{ profile.role }}</p>
-
-              <div class="cv-meta-chips">
-                <span class="cv-chip">
-                  <i class="pi pi-map-marker"></i>
-                  {{ profile.location }}
-                </span>
-                <span class="cv-chip">
-                  <i class="pi pi-calendar"></i>
-                  Updated {{ currentMonth }}
-                </span>
-                <span class="cv-chip">
-                  <i class="pi pi-file-pdf"></i>
-                  PDF · 2 pages
-                </span>
-              </div>
-            </div>
-
-            <div class="cv-actions">
-              <Button
-                as="a"
-                :href="profile.cvFile"
-                download
-                label="Download CV"
-                icon="pi pi-download"
-                class="download-btn"
-                size="large"
-              />
-              <Button
-                as="a"
-                :href="profile.cvFile"
-                target="_blank"
-                label="Preview"
-                icon="pi pi-eye"
-                outlined
-                class="preview-btn"
-                size="large"
-              />
+            <div class="contact-detail-row">
+              <span class="detail-label">RESUME (PDF)</span>
+              <a :href="profile.cvFile" download class="detail-link highlight-link">
+                Download Complete CV (PDF) <span>↓</span>
+              </a>
             </div>
           </div>
         </div>
 
-        <!-- Stats Row -->
-        <div class="cv-stats">
-          <div class="cv-stat glass-card" v-for="stat in stats" :key="stat.label">
-            <div class="stat-icon" :style="{ background: stat.color + '15', color: stat.color }">
-              <i :class="stat.icon"></i>
-            </div>
-            <div>
-              <div class="stat-num" :style="{ color: stat.color }">{{ stat.value }}</div>
-              <div class="stat-label">{{ stat.label }}</div>
-            </div>
+        <!-- Right Side: Enquiry Box -->
+        <div class="contact-form-card dark-panel">
+          <div class="form-header">
+            <h3 class="form-title">Project Brief or General Enquiry</h3>
+            <span class="form-subtitle">// DIRECT TO INBOX</span>
           </div>
-        </div>
 
-        <!-- Contact CTA -->
-        <div class="contact-cta glass-card">
-          <div class="cta-text">
-            <h3 class="cta-title">Got a project in mind?</h3>
-            <p class="cta-desc">I'm open to full-time roles, freelance work, or just a good tech conversation. Either way, say hi.</p>
-          </div>
-          <div class="cta-buttons">
-            <Button as="a" :href="'mailto:' + profile.email" label="Send Email" icon="pi pi-envelope" class="email-btn" />
-            <Button as="a" :href="profile.linkedin" target="_blank" label="LinkedIn" icon="pi pi-linkedin" outlined class="linkedin-btn" />
-          </div>
+          <form @submit.prevent="handleSubmit" class="enquiry-form">
+            <div class="form-field">
+              <label for="name" class="field-label">FULL NAME</label>
+              <input
+                id="name"
+                v-model="form.name"
+                type="text"
+                required
+                placeholder="e.g. Alex Mercer"
+                class="field-input"
+              />
+            </div>
+
+            <div class="form-field">
+              <label for="email" class="field-label">COMPANY / EMAIL</label>
+              <input
+                id="email"
+                v-model="form.email"
+                type="email"
+                required
+                placeholder="e.g. alex@company.com"
+                class="field-input"
+              />
+            </div>
+
+            <div class="form-field">
+              <label for="message" class="field-label">PROJECT SCOPE OR MESSAGE</label>
+              <textarea
+                id="message"
+                v-model="form.message"
+                required
+                rows="4"
+                placeholder="Outline the scope of your team's backend needs, AI workflow goals, or timelines..."
+                class="field-input field-textarea"
+              ></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-action btn-action-primary submit-btn">
+                Send Message <span>↗</span>
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -99,270 +106,215 @@
 </template>
 
 <script setup>
-import Button from 'primevue/button'
-import { profile, cvStats } from '@/data'
+import { reactive } from 'vue'
+import { profile } from '@/data'
 
-const currentMonth = new Intl.DateTimeFormat('id-ID', { month: 'long', year: 'numeric' }).format(new Date())
+const form = reactive({
+  name: '',
+  email: '',
+  message: '',
+})
 
-const stats = cvStats
+function handleSubmit() {
+  const subject = encodeURIComponent(`Engineering Enquiry from ${form.name || 'Visitor'}`)
+  const body = encodeURIComponent(
+    `Name: ${form.name}\nEmail / Company: ${form.email}\n\nMessage:\n${form.message}`
+  )
+  window.location.href = `mailto:${profile.email}?subject=${subject}&body=${body}`
+}
 </script>
 
 <style scoped>
-.cv-section {
+.contact-section {
   background: var(--bg-primary);
 }
 
-.cv-wrapper {
+.contact-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: flex-start;
+}
+
+/* Left Narrative */
+.contact-narrative {
   display: flex;
   flex-direction: column;
   gap: 28px;
-  max-width: 1380px;
-  margin: 0 auto;
 }
 
-/* Main Card */
-.cv-card {
-  position: relative;
-  overflow: hidden;
-  padding: 52px 48px;
+.contact-pitch {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  margin: 0;
 }
 
-.cv-card-bg {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.cv-pattern {
-  position: absolute;
-  inset: 0;
-  opacity: 0.03;
-  background-image: radial-gradient(var(--text-primary) 1px, transparent 1px);
-  background-size: 24px 24px;
-}
-
-.cv-card-content {
-  position: relative;
-  z-index: 1;
+.contact-details-list {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 32px;
-  text-align: center;
-}
-
-/* Avatar */
-.cv-avatar {
-  position: relative;
-  width: 96px; height: 96px;
-}
-
-.cv-avatar-ring {
-  width: 80px; height: 80px;
-  border-radius: 16px;
-  background: var(--bg-secondary);
-  border: 1px solid var(--glass-border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
-}
-
-/* Info */
-.cv-doc-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-primary);
-  background: var(--bg-secondary);
-  border: 1px solid var(--glass-border);
-  padding: 5px 14px;
-  border-radius: 99px;
-  margin-bottom: 10px;
-}
-
-.cv-name {
-  font-size: 2rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  margin-bottom: 4px;
-  letter-spacing: -0.02em;
-}
-
-.cv-role {
-  font-size: 1rem;
-  color: var(--text-secondary);
-  font-weight: 500;
-  margin-bottom: 20px;
-}
-
-.cv-meta-chips {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.cv-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.8rem;
-  font-family: var(--font-mono);
-  color: var(--text-muted);
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.07);
-  padding: 5px 14px;
-  border-radius: 99px;
-}
-
-.cv-chip i { font-size: 0.72rem; color: var(--text-secondary); }
-
-/* Action Buttons */
-.cv-actions {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-:deep(.download-btn) {
-  background: var(--text-primary) !important;
-  color: var(--bg-primary) !important;
-  border: none !important;
-  border-radius: 8px !important;
-  padding: 14px 36px !important;
-  font-size: 0.95rem !important;
-  font-weight: 600 !important;
-  transition: var(--transition) !important;
-}
-:deep(.download-btn:hover) {
-  background: var(--text-secondary) !important;
-  transform: translateY(-2px) !important;
-}
-
-:deep(.preview-btn) {
-  border-radius: 8px !important;
-  padding: 14px 32px !important;
-  font-size: 0.95rem !important;
-  font-weight: 500 !important;
-  border-color: var(--glass-border) !important;
-  color: var(--text-primary) !important;
-  transition: var(--transition) !important;
-}
-:deep(.preview-btn:hover) {
-  border-color: var(--text-secondary) !important;
-  background: var(--bg-card-hover) !important;
-}
-
-/* Stats */
-.cv-stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--glass-border);
 }
 
-.cv-stat {
+.contact-detail-row {
   display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 20px 20px;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.stat-icon {
-  width: 44px; height: 44px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.1rem;
-  flex-shrink: 0;
-}
-
-.stat-num {
-  font-size: 1.5rem;
-  font-weight: 800;
-  line-height: 1;
-  margin-bottom: 3px;
-  letter-spacing: -0.02em;
-}
-
-.stat-label {
-  font-size: 0.75rem;
+.detail-label {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
   color: var(--text-muted);
-  line-height: 1.3;
+  letter-spacing: 0.08em;
 }
 
+.detail-text {
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+}
 
-/* Contact CTA */
-.contact-cta {
+.detail-link {
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  color: var(--text-primary);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.2s ease;
+}
+
+.detail-link span {
+  color: var(--accent-orange);
+  font-size: 0.8rem;
+}
+
+.detail-link:hover {
+  color: var(--accent-orange);
+}
+
+.highlight-link {
+  color: var(--accent-orange);
+}
+
+.detail-links-group {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 32px 40px;
-  background: var(--bg-card) !important;
-  border: 1px solid var(--glass-border) !important;
-  flex-wrap: wrap;
-}
-
-.cta-title {
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 6px;
-}
-
-.cta-desc {
-  font-size: 0.88rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
-}
-
-.cta-buttons {
-  display: flex;
   gap: 10px;
-  flex-shrink: 0;
+}
+
+.sep {
+  color: var(--text-muted);
+}
+
+/* Right Form Card */
+.contact-form-card {
+  padding: 32px 30px;
+  background: #111116;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+}
+
+.form-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--glass-border);
+  margin-bottom: 24px;
   flex-wrap: wrap;
+  gap: 8px;
 }
 
-:deep(.email-btn) {
-  background: var(--text-primary) !important;
-  color: var(--bg-primary) !important;
-  border: none !important;
-  border-radius: 8px !important;
-  font-weight: 500 !important;
-}
-:deep(.email-btn:hover) {
-  background: var(--text-secondary) !important;
-  transform: translateY(-2px) !important;
+.form-title {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
 }
 
-:deep(.linkedin-btn) {
-  border-radius: 8px !important;
-  border-color: var(--glass-border) !important;
-  color: var(--text-primary) !important;
-  font-weight: 500 !important;
-}
-:deep(.linkedin-btn:hover) {
-  border-color: var(--text-secondary) !important;
-  background: var(--bg-card-hover) !important;
+.form-subtitle {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--accent-orange);
+  letter-spacing: 0.06em;
 }
 
-@media (max-width: 768px) {
-  .cv-card { padding: 36px 24px; }
-  .cv-stats { grid-template-columns: repeat(2, 1fr); }
-  .contact-cta { flex-direction: column; text-align: center; padding: 28px 24px; }
-  .cta-buttons { justify-content: center; }
+.enquiry-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
-@media (max-width: 480px) {
-  .cv-stats { grid-template-columns: 1fr 1fr; }
-  .cv-meta-chips { flex-direction: column; align-items: center; }
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-label {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+}
+
+.field-input {
+  width: 100%;
+  background: #09090c;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-family: var(--font-main);
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.field-input:focus {
+  border-color: var(--accent-orange);
+}
+
+.field-input::placeholder {
+  color: #4b4b55;
+  font-size: 0.82rem;
+}
+
+.field-textarea {
+  resize: vertical;
+  min-height: 96px;
+  line-height: 1.5;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 6px;
+}
+
+.submit-btn {
+  padding: 10px 24px;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .contact-layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .contact-form-card {
+    padding: 24px 20px;
+  }
 }
 </style>
