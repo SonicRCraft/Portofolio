@@ -19,11 +19,29 @@
           </p>
 
           <div class="contact-details-list">
+            <!-- Direct Email with Copy & Web Gmail Link (No Outlook Popups) -->
             <div class="contact-detail-row">
               <span class="detail-label">EMAIL</span>
-              <a :href="'mailto:' + profile.email" class="detail-link">
-                {{ profile.email }} <span>↗</span>
-              </a>
+              <div class="email-control-row">
+                <a
+                  :href="gmailDirectUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="detail-link"
+                  title="Open directly in Gmail (Web)"
+                >
+                  {{ profile.email }} <span>↗</span>
+                </a>
+                <button
+                  type="button"
+                  class="btn-copy-chip"
+                  @click="copyEmailOnly"
+                  :title="copiedEmail ? 'Copied!' : 'Copy Email Address'"
+                >
+                  <i :class="copiedEmail ? 'pi pi-check' : 'pi pi-copy'"></i>
+                  <span>{{ copiedEmail ? 'Copied!' : 'Copy' }}</span>
+                </button>
+              </div>
             </div>
 
             <div class="contact-detail-row">
@@ -34,9 +52,9 @@
             <div class="contact-detail-row">
               <span class="detail-label">PROFILES</span>
               <div class="detail-links-group">
-                <a :href="profile.github" target="_blank" class="detail-link">GitHub <span>↗</span></a>
+                <a :href="profile.github" target="_blank" rel="noopener noreferrer" class="detail-link">GitHub <span>↗</span></a>
                 <span class="sep">·</span>
-                <a :href="profile.linkedin" target="_blank" class="detail-link">LinkedIn <span>↗</span></a>
+                <a :href="profile.linkedin" target="_blank" rel="noopener noreferrer" class="detail-link">LinkedIn <span>↗</span></a>
               </div>
             </div>
 
@@ -52,11 +70,12 @@
         <!-- Right Side: Enquiry Box -->
         <div class="contact-form-card dark-panel">
           <div class="form-header">
-            <h3 class="form-title">Project Brief or General Enquiry</h3>
-            <span class="form-subtitle">// DIRECT TO INBOX</span>
+            <h3 class="form-title">{{ isSubmitted ? 'Message Prepared' : 'Project Brief or General Enquiry' }}</h3>
+            <span class="form-subtitle">{{ isSubmitted ? '// READY TO TRANSMIT' : '// DIRECT TO INBOX' }}</span>
           </div>
 
-          <form @submit.prevent="handleSubmit" class="enquiry-form">
+          <!-- Active Form View -->
+          <form v-if="!isSubmitted" @submit.prevent="handleSubmit" class="enquiry-form">
             <div class="form-field">
               <label for="name" class="field-label">FULL NAME</label>
               <input
@@ -99,6 +118,49 @@
               </button>
             </div>
           </form>
+
+          <!-- Prepared / Success View (Never triggers Outlook) -->
+          <div v-else class="transmission-ready-panel animate-fade-up">
+            <div class="ready-badge-row">
+              <span class="status-dot"></span>
+              <span class="ready-badge-text">Prepared for {{ profile.name }} &lt;{{ profile.email }}&gt;</span>
+            </div>
+
+            <div class="transmission-preview-box">
+              <div class="preview-item">
+                <span class="prev-k">FROM</span>
+                <span class="prev-v">{{ form.name }} ({{ form.email }})</span>
+              </div>
+              <div class="preview-item">
+                <span class="prev-k">NOTE</span>
+                <span class="prev-v">{{ form.message }}</span>
+              </div>
+            </div>
+
+            <div class="delivery-actions-group">
+              <a
+                :href="gmailComposeUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-action btn-action-primary delivery-btn"
+              >
+                Open &amp; Send in Gmail (Web) <span>↗</span>
+              </a>
+
+              <button
+                type="button"
+                @click="copyFullTransmission"
+                class="btn-action delivery-btn"
+              >
+                <i :class="copiedTransmission ? 'pi pi-check' : 'pi pi-copy'"></i>
+                <span>{{ copiedTransmission ? 'Copied to Clipboard!' : 'Copy Message & Email' }}</span>
+              </button>
+            </div>
+
+            <button type="button" @click="resetForm" class="btn-reset-form">
+              ← Edit or Send Another Message
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -106,7 +168,7 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue'
+import { reactive, ref, computed } from 'vue'
 import { profile } from '@/data'
 
 const form = reactive({
@@ -115,18 +177,66 @@ const form = reactive({
   message: '',
 })
 
-function handleSubmit() {
+const isSubmitted = ref(false)
+const copiedEmail = ref(false)
+const copiedTransmission = ref(false)
+
+const gmailDirectUrl = computed(() => {
+  return `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(profile.email)}`
+})
+
+const gmailComposeUrl = computed(() => {
   const subject = encodeURIComponent(`Engineering Enquiry from ${form.name || 'Visitor'}`)
   const body = encodeURIComponent(
     `Name: ${form.name}\nEmail / Company: ${form.email}\n\nMessage:\n${form.message}`
   )
-  window.location.href = `mailto:${profile.email}?subject=${subject}&body=${body}`
+  return `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(profile.email)}&su=${subject}&body=${body}`
+})
+
+function copyEmailOnly() {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(profile.email)
+    copiedEmail.value = true
+    setTimeout(() => {
+      copiedEmail.value = false
+    }, 2200)
+  }
+}
+
+function copyFullTransmission() {
+  const text = `To: ${profile.email}\nFrom: ${form.name} (${form.email})\nMessage:\n${form.message}`
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text)
+    copiedTransmission.value = true
+    setTimeout(() => {
+      copiedTransmission.value = false
+    }, 2400)
+  }
+}
+
+function handleSubmit() {
+  isSubmitted.value = true
+  // Copy to clipboard automatically as a convenience
+  copyFullTransmission()
+  // Open Gmail Web in a new tab without triggering native Outlook
+  if (typeof window !== 'undefined') {
+    window.open(gmailComposeUrl.value, '_blank', 'noopener,noreferrer')
+  }
+}
+
+function resetForm() {
+  isSubmitted.value = false
+  form.name = ''
+  form.email = ''
+  form.message = ''
+  copiedTransmission.value = false
 }
 </script>
 
 <style scoped>
 .contact-section {
   background: var(--bg-primary);
+  width: 100%;
 }
 
 .contact-layout {
@@ -134,6 +244,7 @@ function handleSubmit() {
   grid-template-columns: 1fr 1fr;
   gap: 56px;
   align-items: flex-start;
+  width: 100%;
 }
 
 /* Left Narrative */
@@ -145,45 +256,69 @@ function handleSubmit() {
 
 .contact-pitch {
   font-family: var(--font-serif);
-  font-size: 1.35rem;
-  font-weight: 400;
-  color: var(--text-primary);
-  line-height: 1.6;
-  letter-spacing: -0.01em;
+  font-size: 1.25rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
   margin: 0;
 }
 
 .contact-details-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding-top: 12px;
   border-top: 1px solid var(--glass-border);
 }
 
 .contact-detail-row {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--glass-border);
+  align-items: center;
 }
 
 .detail-label {
   font-family: var(--font-mono);
-  font-size: 0.66rem;
-  font-weight: 600;
+  font-size: 0.72rem;
   color: var(--text-muted);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
 }
 
 .detail-text {
-  font-family: var(--font-mono);
-  font-size: 0.84rem;
+  font-size: 0.94rem;
+  color: var(--text-primary);
+}
+
+.email-control-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-copy-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--glass-border);
   color: var(--text-secondary);
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-copy-chip:hover {
+  background: rgba(255, 85, 0, 0.1);
+  border-color: rgba(255, 85, 0, 0.35);
+  color: var(--accent-orange);
 }
 
 .detail-link {
   font-family: var(--font-mono);
-  font-size: 0.84rem;
+  font-size: 0.88rem;
   color: var(--text-primary);
   text-decoration: none;
   display: inline-flex;
@@ -194,7 +329,6 @@ function handleSubmit() {
 
 .detail-link span {
   color: var(--accent-orange);
-  font-size: 0.8rem;
 }
 
 .detail-link:hover {
@@ -221,6 +355,7 @@ function handleSubmit() {
   background: #111116;
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
+  width: 100%;
 }
 
 .form-header {
@@ -308,6 +443,89 @@ function handleSubmit() {
   cursor: pointer;
 }
 
+/* Prepared / Transmission Ready View */
+.transmission-ready-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.ready-badge-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: rgba(34, 197, 94, 0.06);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  border-radius: var(--radius-sm);
+  width: fit-content;
+}
+
+.ready-badge-text {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: #4ade80;
+}
+
+.transmission-preview-box {
+  background: #09090c;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.preview-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.prev-k {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+}
+
+.prev-v {
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  line-height: 1.45;
+}
+
+.delivery-actions-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.delivery-btn {
+  justify-content: center;
+  padding: 12px 18px;
+  gap: 8px;
+  font-size: 0.82rem;
+  width: 100%;
+}
+
+.btn-reset-form {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  cursor: pointer;
+  padding: 6px 0;
+  text-align: center;
+  transition: color 0.2s ease;
+}
+
+.btn-reset-form:hover {
+  color: var(--text-primary);
+}
+
 @media (max-width: 900px) {
   .contact-layout {
     grid-template-columns: 1fr;
@@ -315,6 +533,10 @@ function handleSubmit() {
   }
   .contact-form-card {
     padding: 24px 20px;
+  }
+  .contact-detail-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
   }
 }
 </style>
