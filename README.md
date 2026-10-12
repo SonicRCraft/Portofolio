@@ -74,7 +74,8 @@ To enable automated deployment to your server, add these secrets in your GitHub 
 
 | Secret Name | Deskripsi | Contoh Nilai |
 | :--- | :--- | :--- |
-| `SERVER_HOST` *(Wajib)* | IP Address atau domain server/VPS Anda | `123.45.67.89` atau `portfolio.domain.com` |
+| `TWINGATE_SERVICE_KEY` *(Khusus Twingate)* | Service Account Key dari Twingate Admin Console | `{"version":"1","network":"...","token":"..."}` |
+| `SERVER_HOST` *(Wajib)* | IP Private server di Twingate atau IP Public VPS | `192.168.1.50` atau `myserver.internal` |
 | `SERVER_USER` *(Wajib)* | Username SSH di server | `ubuntu`, `root`, `opc`, atau `debian` |
 | `SERVER_SSH_KEY` *(Wajib salah satu)* | Private SSH Key server (`id_rsa` / `id_ed25519`) | `-----BEGIN OPENSSH PRIVATE KEY----- ...` |
 | `SERVER_SSH_PASSWORD` *(Alternatif)* | Password SSH jika tidak memakai SSH Key | `PasswordServerAnda123!` |
