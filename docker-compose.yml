@@ -6,9 +6,9 @@ services:
     container_name: roland-portfolio
     restart: unless-stopped
     ports:
-      - "8080:80"
+      - "2000:2000"
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:2000/health"]
       interval: 30s
       timeout: 5s
       retries: 3

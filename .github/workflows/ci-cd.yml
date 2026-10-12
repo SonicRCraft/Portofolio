@@ -1,4 +1,4 @@
-name: CI/CD Pipeline & Docker Publish
+name: CI/CD Pipeline & Server Deployment
 
 on:
   push:
@@ -81,3 +81,60 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  # ===================================================
+  # JOB 3: Automated Server Deployment via SSH
+  # ===================================================
+  deploy-to-server:
+    name: Deploy to Server
+    needs: docker-build-and-push
+    runs-on: ubuntu-latest
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Deploy to Remote Server via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          password: ${{ secrets.SERVER_SSH_PASSWORD }}
+          port: ${{ secrets.SERVER_PORT || 22 }}
+          script: |
+            set -e
+
+            echo "=== [1/5] Setting up deployment directory ==="
+            APP_DIR="${{ secrets.SERVER_APP_DIR || '~/portfolio' }}"
+            mkdir -p "$APP_DIR"
+            cd "$APP_DIR"
+
+            echo "=== [2/5] Authenticating with GitHub Container Registry ==="
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+            echo "=== [3/5] Pulling latest production image ==="
+            # Convert repo name to lowercase for Docker image naming compatibility
+            REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+            IMAGE="ghcr.io/${REPO_LOWER}:latest"
+            docker pull "$IMAGE"
+
+            echo "=== [4/5] Deploying updated container ==="
+            docker stop roland-portfolio 2>/dev/null || true
+            docker rm roland-portfolio 2>/dev/null || true
+
+            PORT_MAP="${{ secrets.SERVER_PORT_MAPPING || '2000:2000' }}"
+
+            docker run -d \
+              --name roland-portfolio \
+              --restart unless-stopped \
+              -p "$PORT_MAP" \
+              --health-cmd="wget --quiet --tries=1 --spider http://localhost:2000/health || exit 1" \
+              --health-interval=30s \
+              --health-timeout=5s \
+              --health-retries=3 \
+              "$IMAGE"
+
+            echo "=== [5/5] Cleaning up old unused images ==="
+            docker image prune -f
+
+            echo "=== Deployment Completed Successfully! ==="
+            docker ps --filter "name=roland-portfolio"

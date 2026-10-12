@@ -28,11 +28,11 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/dist /usr/share/nginx/html
 
 # Expose HTTP port
-EXPOSE 80
+EXPOSE 2000
 
 # Container healthcheck
 HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
-  CMD wget --quiet --tries=1 --spider http://localhost/health || exit 1
+  CMD wget --quiet --tries=1 --spider http://localhost:2000/health || exit 1
 
 # Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
