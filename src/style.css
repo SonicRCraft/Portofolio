@@ -65,6 +65,10 @@ body {
   color-scheme: dark;
 }
 
+#p-license-host {
+  display: none !important;
+}
+
 /* Override PrimeVue base styles to match our dark theme */
 .p-button {
   font-family: var(--font-main) !important;

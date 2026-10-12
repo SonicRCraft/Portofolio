@@ -82,26 +82,6 @@
           </div>
         </div>
 
-        <!-- Certificates -->
-        <div class="cv-certificates">
-          <h3 class="certs-title">Certifications</h3>
-          <div class="certs-grid">
-            <a v-for="cert in certificates" :key="cert.name" :href="cert.file" target="_blank" class="cert-card glass-card">
-              <div class="cert-image-wrapper">
-                <iframe :src="cert.file + '#toolbar=0&navpanes=0&scrollbar=0'" class="cert-iframe" scrolling="no" tabindex="-1"></iframe>
-                <div class="cert-overlay-glass"></div>
-              </div>
-              <div class="cert-info">
-                <div class="cert-name">{{ cert.name }}</div>
-                <div class="cert-view">
-                  <i :class="cert.icon" style="margin-right: 4px; color: var(--text-secondary)"></i>
-                  View Certificate <i class="pi pi-external-link" style="font-size: 0.65rem; margin-left: 2px"></i>
-                </div>
-              </div>
-            </a>
-          </div>
-        </div>
-
         <!-- Contact CTA -->
         <div class="contact-cta glass-card">
           <div class="cta-text">
@@ -120,7 +100,7 @@
 
 <script setup>
 import Button from 'primevue/button'
-import { profile, cvStats, certificates } from '@/data'
+import { profile, cvStats } from '@/data'
 
 const currentMonth = new Intl.DateTimeFormat('id-ID', { month: 'long', year: 'numeric' }).format(new Date())
 
@@ -135,8 +115,8 @@ const stats = cvStats
 .cv-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  max-width: 1100px;
+  gap: 28px;
+  max-width: 1380px;
   margin: 0 auto;
 }
 
@@ -318,82 +298,6 @@ const stats = cvStats
   line-height: 1.3;
 }
 
-/* Certificates */
-.cv-certificates {
-  margin-top: 10px;
-}
-.certs-title {
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin-bottom: 20px;
-  color: var(--text-primary);
-}
-.certs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-}
-.cert-card {
-  display: flex;
-  flex-direction: column;
-  text-decoration: none;
-  transition: transform 0.3s ease, border-color 0.3s ease;
-  overflow: hidden;
-  padding: 0;
-}
-.cert-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--text-secondary);
-}
-
-.cert-image-wrapper {
-  width: 100%;
-  height: 180px;
-  position: relative;
-  overflow: hidden;
-  background: #f8f8f8;
-  border-bottom: 1px solid var(--glass-border);
-}
-
-.cert-iframe {
-  width: 500%;
-  height: 500%;
-  transform: scale(0.2);
-  transform-origin: 0 0;
-  border: none;
-  pointer-events: none;
-}
-
-.cert-overlay-glass {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, transparent 60%, rgba(20,20,20,0.8));
-  z-index: 10;
-  pointer-events: none;
-}
-
-.cert-info {
-  padding: 18px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  background: var(--bg-card);
-}
-
-.cert-name {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  line-height: 1.3;
-}
-
-.cert-view {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  font-weight: 500;
-}
 
 /* Contact CTA */
 .contact-cta {

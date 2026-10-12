@@ -10,9 +10,55 @@ export const cvStats = [
 ]
 
 export const certificates = [
-  { name: 'OutSystems Certificate', file: '/sertifikat/Roland%20Rudiyanto%20OutSystems%20Certificate.pdf', icon: 'pi pi-verified', color: '#a3a3a3' },
-  { name: 'OCI AI Foundation Associate', file: '/sertifikat/Sertifikat%20OCI%20AI%20Foundation%20Associate.pdf', icon: 'pi pi-cloud', color: '#a3a3a3' },
-  { name: 'OCI APEX', file: '/sertifikat/Sertifikat%20OCI%20APEX.pdf', icon: 'pi pi-cloud', color: '#a3a3a3' },
-  { name: 'OCI Developer', file: '/sertifikat/Sertifikat%20OCI%20Developer.pdf', icon: 'pi pi-cloud', color: '#a3a3a3' },
-  { name: 'OCI DevOps', file: '/sertifikat/Sertifikat%20OCI%20DevOps.pdf', icon: 'pi pi-cloud', color: '#a3a3a3' }
+  {
+    name: 'OutSystems Architecture & Associate',
+    issuer: 'OutSystems',
+    issuerCategory: 'OutSystems',
+    badge: 'OutSystems',
+    file: '/sertifikat/Roland%20Rudiyanto%20OutSystems%20Certificate.pdf',
+    icon: 'pi pi-verified',
+    color: '#e02424',
+    date: 'Verified Credential'
+  },
+  {
+    name: 'OCI AI Foundation Associate',
+    issuer: 'Oracle Cloud Infrastructure',
+    issuerCategory: 'Oracle Cloud',
+    badge: 'Oracle AI',
+    file: '/sertifikat/Sertifikat%20OCI%20AI%20Foundation%20Associate.pdf',
+    icon: 'pi pi-sparkles',
+    color: '#f97316',
+    date: 'Verified Credential'
+  },
+  {
+    name: 'OCI APEX Cloud Developer',
+    issuer: 'Oracle Cloud Infrastructure',
+    issuerCategory: 'Oracle Cloud',
+    badge: 'Oracle APEX',
+    file: '/sertifikat/Sertifikat%20OCI%20APEX.pdf',
+    icon: 'pi pi-database',
+    color: '#ef4444',
+    date: 'Verified Credential'
+  },
+  {
+    name: 'OCI Developer Professional',
+    issuer: 'Oracle Cloud Infrastructure',
+    issuerCategory: 'Oracle Cloud',
+    badge: 'Oracle Developer',
+    file: '/sertifikat/Sertifikat%20OCI%20Developer.pdf',
+    icon: 'pi pi-code',
+    color: '#3b82f6',
+    date: 'Verified Credential'
+  },
+  {
+    name: 'OCI DevOps Professional',
+    issuer: 'Oracle Cloud Infrastructure',
+    issuerCategory: 'Oracle Cloud',
+    badge: 'Oracle DevOps',
+    file: '/sertifikat/Sertifikat%20OCI%20DevOps.pdf',
+    icon: 'pi pi-server',
+    color: '#10b981',
+    date: 'Verified Credential'
+  }
 ]
+
