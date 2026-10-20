@@ -116,30 +116,22 @@ jobs:
             echo "=== [2/5] Authenticating with GitHub Container Registry ==="
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
-            echo "=== [3/5] Pulling latest production image ==="
-            # Convert repo name to lowercase for Docker image naming compatibility
+            echo "=== [3/5] Generating Environment Variables ==="
             REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
-            IMAGE="ghcr.io/${REPO_LOWER}:latest"
-            docker pull "$IMAGE"
+            
+            # Buat atau timpa file .env untuk digunakan oleh docker-compose
+            echo "IMAGE=ghcr.io/${REPO_LOWER}:latest" > .env
+            echo "PORT_MAP=${{ secrets.SERVER_PORT_MAPPING || '2000:2000' }}" >> .env
 
-            echo "=== [4/5] Deploying updated container ==="
-            docker stop roland-portfolio 2>/dev/null || true
-            docker rm roland-portfolio 2>/dev/null || true
-
-            PORT_MAP="${{ secrets.SERVER_PORT_MAPPING || '2000:2000' }}"
-
-            docker run -d \
-              --name roland-portfolio \
-              --restart unless-stopped \
-              -p "$PORT_MAP" \
-              --health-cmd="wget --quiet --tries=1 --spider http://localhost:2000/health || exit 1" \
-              --health-interval=30s \
-              --health-timeout=5s \
-              --health-retries=3 \
-              "$IMAGE"
+            echo "=== [4/5] Deploying updated container with Docker Compose ==="
+            docker compose pull
+            docker compose up -d
 
             echo "=== [5/5] Cleaning up old unused images ==="
             docker image prune -f
+
+            echo "=== Deployment Completed Successfully! ==="
+            docker compose ps
 
             echo "=== Deployment Completed Successfully! ==="
             docker ps --filter "name=roland-portfolio"
