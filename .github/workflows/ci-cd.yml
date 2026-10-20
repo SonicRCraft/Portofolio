@@ -107,31 +107,44 @@ jobs:
           port: ${{ secrets.SERVER_PORT || 22 }}
           script: |
             set -e
-
+    
             echo "=== [1/5] Setting up deployment directory ==="
             APP_DIR="${{ secrets.SERVER_APP_DIR || '~/portfolio' }}"
             mkdir -p "$APP_DIR"
             cd "$APP_DIR"
-
+    
             echo "=== [2/5] Authenticating with GitHub Container Registry ==="
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
-
-            echo "=== [3/5] Generating Environment Variables ==="
+    
+            echo "=== [3/5] Generating Environment Variables & Config ==="
             REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
             
-            # Buat atau timpa file .env untuk digunakan oleh docker-compose
+            # Buat file .env
             echo "IMAGE=ghcr.io/${REPO_LOWER}:latest" > .env
             echo "PORT_MAP=${{ secrets.SERVER_PORT_MAPPING || '2000:2000' }}" >> .env
-
+    
+            # Buat file docker-compose.yml otomatis di server
+            cat << 'EOF' > docker-compose.yml
+            services:
+              portfolio:
+                image: ${IMAGE}
+                container_name: roland-portfolio
+                restart: unless-stopped
+                ports:
+                  - "${PORT_MAP:-2000:2000}"
+                healthcheck:
+                  test: ["CMD-SHELL", "wget --quiet --tries=1 --spider http://localhost:2000/health || exit 1"]
+                  interval: 30s
+                  timeout: 5s
+                  retries: 3
+            EOF
+    
             echo "=== [4/5] Deploying updated container with Docker Compose ==="
             docker compose pull
             docker compose up -d
-
+    
             echo "=== [5/5] Cleaning up old unused images ==="
             docker image prune -f
-
+    
             echo "=== Deployment Completed Successfully! ==="
             docker compose ps
-
-            echo "=== Deployment Completed Successfully! ==="
-            docker ps --filter "name=roland-portfolio"
